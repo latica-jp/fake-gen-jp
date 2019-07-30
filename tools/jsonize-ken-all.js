@@ -1,9 +1,9 @@
 const fs = require('fs')
 const csv = require('csv')
 const iconv = require('iconv-lite')
-const moji = require('moji')
+const jaconv = require('jaconv')
 const srcPath = './data-source/KEN_ALL.csv'
-const outFilterCount = process.argv[2] || 1
+const outFilterCount = process.argv[2] || 40
 console.log({ outFilterCount })
 
 if (!fs.existsSync(srcPath)) {
@@ -94,13 +94,9 @@ ws.write('\t"data": [\n')
 rs.pipe(iconv.decodeStream('Shift_JIS')).pipe(parser)
 
 const toHankakuEisu = zenkakuEisu =>
-  moji(zenkakuEisu)
-    .convert('ZE', 'HE')
-    .toString()
+  jaconv
+    .toHan(zenkakuEisu)
     .replace('、', ',')
     .replace('~', '-')
 
-const toZenkakuKana = hankakuKana =>
-  moji(hankakuKana)
-    .convert('HK', 'ZK')
-    .toString()
+const toZenkakuKana = hankakuKana => jaconv.toZen(hankakuKana)

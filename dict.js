@@ -1,6 +1,8 @@
+const { randomInt } = require('./utils')
 const addresses = require('./data/address.json')['data']
-
-const randomInt = n => Math.floor(Math.random() * Math.floor(n))
+const firstNames = require('./data/firstName.json')['data']
+const lastNames = require('./data/lastName.json')['data']
+const areaCodes = require('./data/areaCode.json')['data']
 
 const getBuildingName = (street, streetKana) => {
   const arr = ['ハイツ', 'コーポ', 'メゾン', 'ヴィラ', 'ハイム', 'シャトー']
@@ -24,8 +26,19 @@ addresses.forEach(addr => {
   }
 })
 
+const phoneNumbers = areaCodes.reduce((prev, areaCode) => {
+  const len = areaCode.cityCode.length
+  const arr = [...Array(20)].map(num => {
+    const cityCode = `0000${randomInt(10 ** len - 1)}`.slice(-len)
+    const code = `0000${randomInt(10000)}`.slice(-4)
+    return `0${areaCode.areaCode}-${cityCode}-${code}`
+  })
+  return [...prev, ...arr]
+}, [])
+
 module.exports = {
   addresses,
-  firstNames: require('./data/firstName.json')['data'],
-  lastNames: require('./data/lastName.json')['data'],
+  firstNames,
+  lastNames,
+  phoneNumbers,
 }

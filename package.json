@@ -19,6 +19,6 @@
   "dependencies": {
     "csv": "^5.1.1",
     "iconv-lite": "^0.5.0",
-    "moji": "https://github.com/niwaringo/moji"
+    "jaconv": "^1.0.4"
   }
 }
